@@ -20,10 +20,18 @@ require_once 'Conexion.php';
 
 
         public function __tostring(){
-            return "<br>Producto[codigo=".$this->codigo." ,nombre= ".$this->nombre
-            ." , precio=".$this->precio;
+            return "<br>Producto[codigo=" . $this->codigo
+                . ", nombre=" . $this->nombre
+                . ", precio=" . $this->precio
+                . "]<br>";
         }
 
+
+       public function __get(string $name): mixed {
+        return $this->$name;
+        }
+    
+    
         public function insertar(){
             try{
                 $conex=new Conexion();
@@ -70,9 +78,9 @@ require_once 'Conexion.php';
                     }
                 }else{
                     $producto=false;
-                    $conex->close();
-                    return $producto;
                 }
+                $conex->close();
+                return $producto;
             }catch(Exception $e){
                 echo "<a hreff=index.php>Ir a inicio</a>";
                 die("ERROR CON LA BD: ".$e->getMessage());

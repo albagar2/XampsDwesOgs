@@ -40,8 +40,13 @@
         if($productos){
             foreach($productos as $p){
                 //nombre de la clase no de la bbdd
-                echo $p;
+                echo "Código: ".$p->codigo."<br>";
+                echo "Nombre: ".$p->nombre."<br>";
+                echo "Precio: ".$p->precio."<br>";
+                echo "<br>=========<br>";
             }
+        }else{
+            echo "No hay productos";
         }
     }
 
