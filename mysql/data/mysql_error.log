@@ -1003,3 +1003,56 @@ recovered pages: 0% 13% 37% 69% 100% (0.0 seconds); tables to flush: 1 0
 2025-11-17  9:38:50 0 [Note] InnoDB: Loading buffer pool(s) from C:\xampp\mysql\data\ib_buffer_pool
 2025-11-17  9:38:50 0 [Note] Plugin 'FEEDBACK' is disabled.
 2025-11-17  9:38:50 0 [Note] Server socket created on IP: '::'.
+2025-11-21 10:49:38 0 [Note] Starting MariaDB 10.4.32-MariaDB source revision c4143f909528e3fab0677a28631d10389354c491 as process 22204
+2025-11-21 10:49:38 0 [Note] InnoDB: Mutexes and rw_locks use Windows interlocked functions
+2025-11-21 10:49:38 0 [Note] InnoDB: Uses event mutexes
+2025-11-21 10:49:38 0 [Note] InnoDB: Compressed tables use zlib 1.3
+2025-11-21 10:49:38 0 [Note] InnoDB: Number of pools: 1
+2025-11-21 10:49:38 0 [Note] InnoDB: Using SSE2 crc32 instructions
+2025-11-21 10:49:38 0 [Note] InnoDB: Initializing buffer pool, total size = 16M, instances = 1, chunk size = 16M
+2025-11-21 10:49:38 0 [Note] InnoDB: Completed initialization of buffer pool
+2025-11-21 10:49:38 0 [Note] InnoDB: Starting crash recovery from checkpoint LSN=309092
+2025-11-21 10:49:38 0 [Note] InnoDB: 128 out of 128 rollback segments are active.
+2025-11-21 10:49:38 0 [Note] InnoDB: Removed temporary tablespace data file: "ibtmp1"
+2025-11-21 10:49:38 0 [Note] InnoDB: Creating shared tablespace for temporary tables
+2025-11-21 10:49:38 0 [Note] InnoDB: Setting file 'C:\xampp\mysql\data\ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
+2025-11-21 10:49:38 0 [Note] InnoDB: File 'C:\xampp\mysql\data\ibtmp1' size is now 12 MB.
+2025-11-21 10:49:38 0 [Note] InnoDB: Waiting for purge to start
+2025-11-21 10:49:38 0 [Note] InnoDB: 10.4.32 started; log sequence number 309101; transaction id 255
+2025-11-21 10:49:38 0 [Note] InnoDB: Loading buffer pool(s) from C:\xampp\mysql\data\ib_buffer_pool
+2025-11-21 10:49:38 0 [Note] Plugin 'FEEDBACK' is disabled.
+2025-11-21 10:49:38 0 [ERROR] InnoDB: Expected tablespace id 3 but found 4294967294 in the file .\mysql\transaction_registry.ibd
+2025-11-21 10:49:38 0 [Note] InnoDB: trying to read page [page id: space=3, page number=0] in the background in a non-existing or being-dropped tablespace
+2025-11-21 10:49:38 0 [ERROR] InnoDB: Expected tablespace id 3 but found 4294967294 in the file .\mysql\transaction_registry.ibd
+2025-11-21 10:49:38 0 [Note] InnoDB: trying to read page [page id: space=3, page number=1] in the background in a non-existing or being-dropped tablespace
+2025-11-21 10:49:38 0 [ERROR] InnoDB: Expected tablespace id 3 but found 4294967294 in the file .\mysql\transaction_registry.ibd
+2025-11-21 10:49:38 0 [Note] InnoDB: trying to read page [page id: space=3, page number=2] in the background in a non-existing or being-dropped tablespace
+2025-11-21 10:49:38 0 [ERROR] InnoDB: Expected tablespace id 3 but found 4294967294 in the file .\mysql\transaction_registry.ibd
+2025-11-21 10:49:38 0 [Note] InnoDB: trying to read page [page id: space=3, page number=3] in the background in a non-existing or being-dropped tablespace
+2025-11-21 10:49:38 0 [ERROR] InnoDB: Expected tablespace id 3 but found 4294967294 in the file .\mysql\transaction_registry.ibd
+2025-11-21 10:49:38 0 [Note] InnoDB: trying to read page [page id: space=3, page number=4] in the background in a non-existing or being-dropped tablespace
+2025-11-21 10:49:38 0 [ERROR] InnoDB: Expected tablespace id 3 but found 4294967294 in the file .\mysql\transaction_registry.ibd
+2025-11-21 10:49:38 0 [Note] InnoDB: trying to read page [page id: space=3, page number=5] in the background in a non-existing or being-dropped tablespace
+2025-11-21 10:49:38 0 [ERROR] InnoDB: Expected tablespace id 3 but found 4294967294 in the file .\mysql\transaction_registry.ibd
+2025-11-21 10:49:38 0 [Note] InnoDB: trying to read page [page id: space=3, page number=6] in the background in a non-existing or being-dropped tablespace
+2025-11-21 10:49:38 0 [Note] InnoDB: Buffer pool(s) load completed at 251121 10:49:38
+2025-11-21 10:49:38 0 [Note] Server socket created on IP: '::'.
+2025-11-21 10:49:45 0 [Note] Starting MariaDB 10.4.32-MariaDB source revision c4143f909528e3fab0677a28631d10389354c491 as process 26492
+2025-11-21 10:49:45 0 [Note] InnoDB: Mutexes and rw_locks use Windows interlocked functions
+2025-11-21 10:49:45 0 [Note] InnoDB: Uses event mutexes
+2025-11-21 10:49:45 0 [Note] InnoDB: Compressed tables use zlib 1.3
+2025-11-21 10:49:45 0 [Note] InnoDB: Number of pools: 1
+2025-11-21 10:49:45 0 [Note] InnoDB: Using SSE2 crc32 instructions
+2025-11-21 10:49:45 0 [Note] InnoDB: Initializing buffer pool, total size = 16M, instances = 1, chunk size = 16M
+2025-11-21 10:49:45 0 [Note] InnoDB: Completed initialization of buffer pool
+2025-11-21 10:49:45 0 [Note] InnoDB: Starting crash recovery from checkpoint LSN=309092
+2025-11-21 10:49:45 0 [Note] InnoDB: 128 out of 128 rollback segments are active.
+2025-11-21 10:49:45 0 [Note] InnoDB: Removed temporary tablespace data file: "ibtmp1"
+2025-11-21 10:49:45 0 [Note] InnoDB: Creating shared tablespace for temporary tables
+2025-11-21 10:49:45 0 [Note] InnoDB: Setting file 'C:\xampp\mysql\data\ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
+2025-11-21 10:49:45 0 [Note] InnoDB: File 'C:\xampp\mysql\data\ibtmp1' size is now 12 MB.
+2025-11-21 10:49:45 0 [Note] InnoDB: Waiting for purge to start
+2025-11-21 10:49:45 0 [Note] InnoDB: 10.4.32 started; log sequence number 309101; transaction id 255
+2025-11-21 10:49:45 0 [Note] InnoDB: Loading buffer pool(s) from C:\xampp\mysql\data\ib_buffer_pool
+2025-11-21 10:49:45 0 [Note] Plugin 'FEEDBACK' is disabled.
+2025-11-21 10:49:45 0 [Note] Server socket created on IP: '::'.
