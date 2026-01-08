@@ -1,0 +1,8 @@
+TYPE=TRIGGERS
+triggers='CREATE DEFINER=`root`@`localhost` TRIGGER aipartido AFTER INSERT ON partido\nFOR EACH ROW\nBEGIN\n    -- Equipo Local (e1)\n    CALL recalcular_equipo(NEW.e1, NEW.g1, NEW.g2, \'+\');\n    -- Equipo Visitante (e2) (sus goles a favor son NEW.g2, sus goles en contra son NEW.g1)\n    CALL recalcular_equipo(NEW.e2, NEW.g2, NEW.g1, \'+\');\nEND' 'CREATE DEFINER=`root`@`localhost` TRIGGER aupartido AFTER UPDATE ON partido\nFOR EACH ROW\nBEGIN\n    -- 1. Revertir el impacto del resultado antiguo (OLD)\n    -- Equipo Local (e1)\n    CALL recalcular_equipo(OLD.e1, OLD.g1, OLD.g2, \'-\');\n    -- Equipo Visitante (e2)\n    CALL recalcular_equipo(OLD.e2, OLD.g2, OLD.g1, \'-\');\n\n    -- 2. Aplicar el impacto del nuevo resultado (NEW)\n    -- Equipo Local (e1)\n    CALL recalcular_equipo(NEW.e1, NEW.g1, NEW.g2, \'+\');\n    -- Equipo Visitante (e2)\n    CALL recalcular_equipo(NEW.e2, NEW.g2, NEW.g1, \'+\');\nEND' 'CREATE DEFINER=`root`@`localhost` TRIGGER adpartido AFTER DELETE ON partido\nFOR EACH ROW\nBEGIN\n    -- Revertir el impacto del partido en e1 (g1 vs g2)\n    CALL recalcular_equipo(OLD.e1, OLD.g1, OLD.g2, \'-\');\n    -- Revertir el impacto del partido en e2 (g2 vs g1)\n    CALL recalcular_equipo(OLD.e2, OLD.g2, OLD.g1, \'-\');\nEND'
+sql_modes=1098907648 1098907648 1098907648
+definers='root@localhost' 'root@localhost' 'root@localhost'
+client_cs_names='utf8mb4' 'utf8mb4' 'utf8mb4'
+connection_cl_names='utf8mb4_general_ci' 'utf8mb4_general_ci' 'utf8mb4_general_ci'
+db_cl_names='utf8mb4_general_ci' 'utf8mb4_general_ci' 'utf8mb4_general_ci'
+created=1765486222900172 1765486222932338 1765486222911212

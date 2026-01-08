@@ -24,7 +24,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
             <br><label for="salario">Salario:</label>
             <input type="text" name="salario" value=""><br>
             
-            
             <br>Idiomas: <br>
             <input type="checkbox" name="idiomas[]" value="Inglés">Inglés<br>
                 <input type="checkbox" name="idiomas[]" value="Francés">Francés<br>
