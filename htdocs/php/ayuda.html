@@ -1,0 +1,314 @@
+
+
+Para resolver este ejercicio de examen siguiendo estrictamente el patrón MVC y tus reglas de estilo (sin alias de superglobales, usando clases con métodos y la clase Conexion), aquí tienes la estructura completa.
+
+Nota: He ajustado el código para usar mysqli (como pide el enunciado) dentro de la estructura de la clase Conexion, manteniendo la coherencia con tus ejemplos anteriores.
+
+📂 Carpeta: controller
+Conexion.php
+PHP
+<?php
+class Conexion extends mysqli {
+    private $host = "localhost";
+    private $usu = "root"; // Ajustar según examen
+    private $pass = "";     // Ajustar según examen
+    private $bd = "partes";
+
+    public function __construct() {
+        parent::__construct($this->host, $this->usu, $this->pass, $this->bd);
+        if ($this->connect_error) {
+            die("Error de conexión: " . $this->connect_error);
+        }
+    }
+}
+?>
+ControladorProfesor.php
+PHP
+<?php
+require_once "Conexion.php";
+include_once "../model/Profesor.php";
+
+class ControladorProfesor {
+    public static function login() {
+        $conex = new Conexion();
+        $dni = $_POST['dni'];
+        $clave = md5($_POST['pass']); // Encriptación MD5 según enunciado
+        $ahora = time();
+
+        $sql = "SELECT * FROM profesores WHERE dni_p = '$dni'";
+        $res = $conex->query($sql);
+
+        if ($prof = $res->fetch_object()) {
+            // Verificar si está bloqueado por tiempo
+            if ($prof->bloqueado == 1 && $ahora < ($prof->hora_bloqueo + 60)) {
+                return "Usuario bloqueado. Espere un minuto.";
+            }
+
+            if ($prof->pass === $clave) {
+                // Login correcto: resetear intentos y bloqueo
+                $conex->query("UPDATE profesores SET intentos = 3, bloqueado = 0, hora_bloqueo = 0 WHERE dni_p = '$dni'");
+                session_start();
+                $_SESSION['profesor_dni'] = $prof->dni_p;
+                $_SESSION['profesor_nombre'] = $prof->nombre . " " . $prof->apellidos;
+                header("Location: partes.php");
+            } else {
+                // Clave incorrecta: restar intento
+                $nuevos_intentos = $prof->intentos - 1;
+                if ($nuevos_intentos <= 0) {
+                    $conex->query("UPDATE profesores SET intentos = 0, bloqueado = 1, hora_bloqueo = $ahora WHERE dni_p = '$dni'");
+                    return "Intentos agotados. Bloqueado durante 1 minuto.";
+                } else {
+                    $conex->query("UPDATE profesores SET intentos = $nuevos_intentos WHERE dni_p = '$dni'");
+                    return "Clave incorrecta. Quedan $nuevos_intentos intentos.";
+                }
+            }
+        } else {
+            return "Usuario o clave incorrecta.";
+        }
+    }
+
+    public static function logout() {
+        session_start();
+        session_destroy();
+        header("Location: index.php");
+    }
+}
+?>
+ControladorCurso.php
+PHP
+<?php
+require_once "Conexion.php";
+
+class ControladorCurso {
+    public static function obtenerCursosProfesor($dni_p) {
+        $conex = new Conexion();
+        $sql = "SELECT c.* FROM curso c 
+                INNER JOIN prof_curso pc ON c.id_curso = pc.id_curso 
+                WHERE pc.dni_p = '$dni_p'";
+        $res = $conex->query($sql);
+        $cursos = [];
+        while ($fila = $res->fetch_object()) {
+            $cursos[] = $fila;
+        }
+        return $cursos;
+    }
+
+    public static function obtenerInfoCurso($id_curso) {
+        $conex = new Conexion();
+        $res = $conex->query("SELECT * FROM curso WHERE id_curso = $id_curso");
+        return $res->fetch_object();
+    }
+}
+?>
+ControladorAlumno.php
+PHP
+<?php
+require_once "Conexion.php";
+
+class ControladorAlumno {
+    public static function listarPorCurso($id_curso) {
+        $conex = new Conexion();
+        $res = $conex->query("SELECT * FROM alumnos WHERE id_curso = $id_curso");
+        $alumnos = [];
+        while ($fila = $res->fetch_object()) {
+            $alumnos[] = $fila;
+        }
+        return $alumnos;
+    }
+
+    public static function obtenerAlumno($dni_a) {
+        $conex = new Conexion();
+        $res = $conex->query("SELECT * FROM alumnos WHERE dni_a = '$dni_a'");
+        return $res->fetch_object();
+    }
+}
+?>
+ControladorParte.php
+PHP
+<?php
+require_once "Conexion.php";
+
+class ControladorParte {
+    public static function guardarParte() {
+        $conex = new Conexion();
+        $dni_a = $_POST['dni_a'];
+        $dni_p = $_SESSION['profesor_dni'];
+        $motivo = $_POST['motivo'];
+        $id_curso = $_POST['id_curso'];
+        $tiempo = time();
+        $nombreFoto = null;
+
+        if (isset($_FILES['foto']) && $_FILES['foto']['error'] == 0) {
+            $ext = strtolower(pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION));
+            if ($ext == 'jpg') {
+                $nombreFoto = $dni_a . "-" . $tiempo . ".jpg";
+                move_uploaded_file($_FILES['foto']['tmp_name'], "../imgpartes/" . $nombreFoto);
+            }
+        }
+
+        $sql = "INSERT INTO partes (dni_p, dni_a, motivo, time, foto) VALUES ('$dni_p', '$dni_a', '$motivo', $tiempo, '$nombreFoto')";
+        
+        if ($conex->query($sql)) {
+            // Actualizar contador en tabla curso
+            $conex->query("UPDATE curso SET totalpartes = totalpartes + 1 WHERE id_curso = $id_curso");
+            return "Parte registrado correctamente.";
+        }
+        return "Error al registrar el parte.";
+    }
+}
+?>
+📂 Carpeta: model
+Profesor.php
+PHP
+<?php
+class Profesor {
+    protected $dni_p;
+    protected $nombre;
+    protected $apellidos;
+    protected $intentos;
+
+    public function __construct($dni_p, $nombre, $apellidos, $intentos) {
+        $this->dni_p = $dni_p;
+        $this->nombre = $nombre;
+        $this->apellidos = $apellidos;
+        $this->intentos = $intentos;
+    }
+
+    public function __get($name) { return $this->$name; }
+    public function __set($name, $value) { $this->$name = $value; }
+}
+?>
+📂 Carpeta: view
+index.php
+PHP
+<!DOCTYPE html>
+<html lang="es">
+<head><title>Login</title></head>
+<body>
+    <h2>Login Profesores</h2>
+    <?php
+    include_once "../controller/ControladorProfesor.php";
+    if (isset($_POST['enviar'])) {
+        echo "<p style='color:red'>" . ControladorProfesor::login() . "</p>";
+    }
+    ?>
+    <form action="" method="POST">
+        DNI: <input type="text" name="dni" required><br>
+        Clave: <input type="password" name="pass" required><br>
+        <button type="submit" name="enviar">Entrar</button>
+    </form>
+</body>
+</html>
+partes.php
+PHP
+<?php
+session_start();
+if (!isset($_SESSION['profesor_dni'])) header("Location: index.php");
+include_once "../controller/ControladorCurso.php";
+include_once "../controller/ControladorAlumno.php";
+?>
+<!DOCTYPE html>
+<html>
+<body>
+    <a href="logout.php">Cerrar Sesión</a>
+    <p>Profesor: <?php echo $_SESSION['profesor_nombre']; ?></p>
+    
+    <form method="POST">
+        Seleccione curso: 
+        <select name="id_curso">
+            <?php
+            $cursos = ControladorCurso::obtenerCursosProfesor($_SESSION['profesor_dni']);
+            foreach ($cursos as $c) {
+                echo "<option value='$c->id_curso'>$c->descripcion</option>";
+            }
+            ?>
+        </select>
+        <input type="submit" name="ver_curso" value="Seleccionar curso">
+    </form>
+
+    <?php
+    if (isset($_POST['ver_curso'])) {
+        $info = ControladorCurso::obtenerInfoCurso($_POST['id_curso']);
+        echo "<h3>Total partes del curso: $info->totalpartes</h3>";
+        
+        $alumnos = ControladorAlumno::listarPorCurso($_POST['id_curso']);
+        echo "<table border='1'><tr><th>Nombre</th><th>Apellidos</th><th>Acción</th></tr>";
+        foreach ($alumnos as $al) {
+            echo "<tr>
+                    <td>$al->nombre</td>
+                    <td>$al->apellidos</td>
+                    <td>
+                        <form action='nuevoparte.php' method='POST'>
+                            <input type='hidden' name='dni_a' value='$al->dni_a'>
+                            <input type='hidden' name='id_curso' value='$info->id_curso'>
+                            <input type='hidden' name='curso_desc' value='$info->descripcion'>
+                            <input type='submit' value='Nuevo parte'>
+                        </form>
+                    </td>
+                  </tr>";
+        }
+        echo "</table>";
+    }
+    ?>
+</body>
+</html>
+nuevoparte.php
+PHP
+<?php
+session_start();
+if (!isset($_SESSION['profesor_dni'])) header("Location: index.php");
+include_once "../controller/ControladorAlumno.php";
+include_once "../controller/ControladorParte.php";
+
+$alumno = ControladorAlumno::obtenerAlumno($_POST['dni_a']);
+?>
+<!DOCTYPE html>
+<html>
+<body>
+    <a href="logout.php">Cerrar Sesión</a> | <a href="partes.php">Volver al inicio</a>
+    <h2>Partes de Incidencias</h2>
+    <p>Profesor: <?php echo $_SESSION['profesor_nombre']; ?></p>
+
+    <?php
+    if (isset($_POST['guardar'])) {
+        echo "<p>" . ControladorParte::guardarParte() . "</p>";
+    }
+    ?>
+
+    <p>D/Dª <?php echo $_SESSION['profesor_nombre']; ?>, como profesor de este Centro, comunica que el alumno/a 
+    <strong><?php echo $alumno->nombre . " " . $alumno->apellidos; ?></strong> 
+    del grupo <strong><?php echo $_POST['curso_desc']; ?></strong> ha cometido la siguiente falta:</p>
+
+    <form method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="dni_a" value="<?php echo $alumno->dni_a; ?>">
+        <input type="hidden" name="id_curso" value="<?php echo $_POST['id_curso']; ?>">
+        <input type="hidden" name="curso_desc" value="<?php echo $_POST['curso_desc']; ?>">
+        
+        <textarea name="motivo" rows="4" cols="50" required></textarea><br><br>
+        Imagen (solo JPG): <input type="file" name="foto" accept=".jpg"><br><br>
+        <input type="submit" name="guardar" value="Guardar parte">
+    </form>
+</body>
+</html>
+logout.php
+PHP
+<?php
+include_once "../controller/ControladorProfesor.php";
+ControladorProfesor::logout();
+?>
+📂 Estructura de carpetas necesaria:
+controller/ (Archivos .php)
+
+model/ (Archivos .php)
+
+view/ (Archivos .php)
+
+imgpartes/ (Carpeta vacía con permisos de escritura para las fotos)
+
+¿Te gustaría que te prepare algún ejercicio de "Listado de Partes por Alumno" o "Borrado de Incidencias" para completar el estudio?
+
+
+
+
+Gemini puede cometer errores, incluso sobre personas, así que verifica sus respuestas. Tu privacidad y GeminiSe abre en una ventana nueva
+
