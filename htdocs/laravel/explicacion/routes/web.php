@@ -21,5 +21,9 @@ Route::get('contacto/{nombre?}/{edad?}', function($nombre = "Usuario", $edad = 2
 
 Route::get('rutadatos', function () {
     return view('datos');
-})->name('rata-datos');
+})->name('ruta-datos');
+
+Route::get('rutaalerta', function () {
+    return view(view: 'vista_alert');
+})->name('ruta-alerta');
 
