@@ -1,0 +1,16 @@
+TYPE=VIEW
+query=select 1 AS `id`,1 AS `nombre`,1 AS `titulacion`,1 AS `cargo`,1 AS `usuario`,1 AS `email`
+md5=ff000970dd7d5afd2364ed4d9941c424
+updatable=0
+algorithm=0
+definer_user=root
+definer_host=localhost
+suid=2
+with_check_option=0
+timestamp=0001768310270414329
+create-version=2
+source=SELECT \n 1 AS `id`,\n 1 AS `nombre`,\n 1 AS `titulacion`,\n 1 AS `cargo`,\n 1 AS `usuario`,\n 1 AS `email`
+client_cs_name=utf8mb4
+connection_cl_name=utf8_general_ci
+view_body_utf8=select 1 AS `id`,1 AS `nombre`,1 AS `titulacion`,1 AS `cargo`,1 AS `usuario`,1 AS `email`
+mariadb-version=100432

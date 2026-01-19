@@ -1,0 +1,16 @@
+TYPE=VIEW
+query=select 1 AS `usuario_id`,1 AS `usuario`,1 AS `rol`,1 AS `permiso`,1 AS `recurso`,1 AS `accion`
+md5=ab09fabc0599330b9506bb343bb5cb87
+updatable=0
+algorithm=0
+definer_user=root
+definer_host=localhost
+suid=2
+with_check_option=0
+timestamp=0001768310270402646
+create-version=2
+source=SELECT \n 1 AS `usuario_id`,\n 1 AS `usuario`,\n 1 AS `rol`,\n 1 AS `permiso`,\n 1 AS `recurso`,\n 1 AS `accion`
+client_cs_name=utf8mb4
+connection_cl_name=utf8_general_ci
+view_body_utf8=select 1 AS `usuario_id`,1 AS `usuario`,1 AS `rol`,1 AS `permiso`,1 AS `recurso`,1 AS `accion`
+mariadb-version=100432
