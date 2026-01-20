@@ -1,5 +1,5 @@
-<x-layouts::app :title="__('Inicio')">
+<x-layouts::app :title="__('Productos')">
     <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
-        Bienvenido a la web de productos
+        LISTADO DE PRODUCTOS
     </div>
 </x-layouts::app>

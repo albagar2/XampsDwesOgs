@@ -1,30 +1,3 @@
-<?php
-
-use App\Concerns\PasswordValidationRules;
-use App\Livewire\Actions\Logout;
-use Illuminate\Support\Facades\Auth;
-use Livewire\Component;
-
-new class extends Component {
-    use PasswordValidationRules;
-
-    public string $password = '';
-
-    /**
-     * Delete the currently authenticated user.
-     */
-    public function deleteUser(Logout $logout): void
-    {
-        $this->validate([
-            'password' => $this->currentPasswordRules(),
-        ]);
-
-        tap(Auth::user(), $logout(...))->delete();
-
-        $this->redirect('/', navigate: true);
-    }
-}; ?>
-
 <section class="mt-10 space-y-6">
     <div class="relative mb-5">
         <flux:heading>{{ __('Delete account') }}</flux:heading>
@@ -32,7 +5,7 @@ new class extends Component {
     </div>
 
     <flux:modal.trigger name="confirm-user-deletion">
-        <flux:button variant="danger" x-data="" x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')" data-test="delete-user-button">
+        <flux:button variant="danger" x-data="" x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')">
             {{ __('Delete account') }}
         </flux:button>
     </flux:modal.trigger>
@@ -54,9 +27,7 @@ new class extends Component {
                     <flux:button variant="filled">{{ __('Cancel') }}</flux:button>
                 </flux:modal.close>
 
-                <flux:button variant="danger" type="submit" data-test="confirm-delete-user-button">
-                    {{ __('Delete account') }}
-                </flux:button>
+                <flux:button variant="danger" type="submit">{{ __('Delete account') }}</flux:button>
             </div>
         </form>
     </flux:modal>

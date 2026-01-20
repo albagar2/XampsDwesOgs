@@ -1,4 +1,6 @@
-<x-layouts::auth>
+<x-layouts::app :title="__('Login')">
+    <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
+        <x-layouts::auth>
     <div class="flex flex-col gap-6">
         <x-auth-header :title="__('Log in to your account')" :description="__('Enter your email and password below to log in')" />
 
@@ -57,3 +59,8 @@
         @endif
     </div>
 </x-layouts::auth>
+    </div>
+</x-layouts::app>
+
+
+

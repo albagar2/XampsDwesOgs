@@ -5,10 +5,12 @@ on:
     branches:
       - develop
       - main
+      - components
   pull_request:
     branches:
       - develop
       - main
+      - components
 
 permissions:
   contents: write
@@ -18,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: Testing
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -37,7 +39,7 @@ jobs:
         run: composer lint
 
       # - name: Commit Changes
-      #   uses: stefanzweifel/git-auto-commit-action@v7
+      #   uses: stefanzweifel/git-auto-commit-action@v5
       #   with:
       #     commit_message: fix code style
       #     commit_options: '--no-verify'
