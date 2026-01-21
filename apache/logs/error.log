@@ -809,3 +809,5 @@
 [Wed Jan 21 08:49:02.844152 2026] [core:notice] [pid 86932:tid 472] AH00094: Command line: 'c:\\xampp\\apache\\bin\\httpd.exe -d C:/xampp/apache'
 [Wed Jan 21 08:49:02.852153 2026] [mpm_winnt:notice] [pid 86932:tid 472] AH00418: Parent: Created child process 102336
 [Wed Jan 21 08:49:03.185264 2026] [ssl:warn] [pid 102336:tid 444] AH01909: www.example.com:443:0 server certificate does NOT include an ID which matches the server name
+[Wed Jan 21 08:49:03.267232 2026] [ssl:warn] [pid 102336:tid 444] AH01909: www.example.com:443:0 server certificate does NOT include an ID which matches the server name
+[Wed Jan 21 08:49:03.332925 2026] [mpm_winnt:notice] [pid 102336:tid 444] AH00354: Child: Starting 150 worker threads.
