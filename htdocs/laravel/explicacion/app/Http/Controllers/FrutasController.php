@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class FrutasController extends Controller
+{
+    //metodo index que devuelve una vista
+
+    public function index(){
+        $frutas=['manzana', 'pera', 'naranja', 'kiwi', 'sandia'];
+        return view('frutas.index', compact('frutas'));
+    }
+
+    public function naranjas(){
+        return "Esta es la pagina de naranjas";
+    }
+
+    public function peras(){
+        return "Esta es la pagina de peras";
+    }
+}

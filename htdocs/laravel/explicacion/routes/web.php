@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FrutasController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -27,3 +28,9 @@ Route::get('rutaalerta', function () {
     return view(view: 'vista_alert');
 })->name('ruta-alerta');
 
+
+Route::get('/frutas', [FrutasController::class, 'index'])->name('frutas.index');
+
+Route::get('/frutas/naranjas', [FrutasController::class, 'naranjas'])->name('frutas.naranjas');
+
+Route::get('/frutas/peras', [FrutasController::class, 'peras'])->name('frutas.peras');
