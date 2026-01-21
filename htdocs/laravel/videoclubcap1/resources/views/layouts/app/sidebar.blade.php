@@ -33,7 +33,6 @@
             <x-desktop-user-menu class="hidden lg:block" :name="auth()->user()->name" />
         </flux:sidebar>
 
-
         <!-- Mobile User Menu -->
         <flux:header class="lg:hidden">
             <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
@@ -94,3 +93,16 @@
         @fluxScripts
     </body>
 </html>
+
+
+
+
+@auth
+    <a href="{{ route('catalog') }}">Catálogo</a>
+    <a href="{{ route('create') }}">Añadir película</a>
+@endauth
+
+@guest
+    <a href="{{ route('login') }}">Login</a>
+    <a href="{{ route('register') }}">Register</a>
+@endguest
