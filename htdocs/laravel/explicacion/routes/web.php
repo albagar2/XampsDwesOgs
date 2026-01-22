@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 Route::get('contacto/{nombre?}/{edad?}', function($nombre = "Usuario", $edad = 2) {
     $frutas = ['manzana', 'pera', 'banana', 'naranja'];
@@ -17,7 +17,8 @@ Route::get('contacto/{nombre?}/{edad?}', function($nombre = "Usuario", $edad = 2
 })->where([
     'nombre' => '[A-Za-z]+',
     'edad' => '[0-9]+'
-])->name('contacto');
+])->name('contacto')
+->middleware('mayoredad:25');
 
 
 Route::get('rutadatos', function () {
@@ -29,8 +30,13 @@ Route::get('rutaalerta', function () {
 })->name('ruta-alerta');
 
 
-Route::get('/frutas', [FrutasController::class, 'index'])->name('frutas.index');
+Route::prefix('/fruteria')->group(function () {
 
-Route::get('/frutas/naranjas', [FrutasController::class, 'naranjas'])->name('frutas.naranjas');
+    Route::get('/frutas', [FrutasController::class, 'index'])->name('frutas.index');
 
-Route::get('/frutas/peras', [FrutasController::class, 'peras'])->name('frutas.peras');
+    Route::get('/naranjas', [FrutasController::class, 'naranjas'])->name('frutas.naranjas');
+
+    Route::get('/peras', [FrutasController::class, 'peras'])->name('frutas.peras');
+
+    Route::post('/frutas', [FrutasController::class, 'recibeFrutas'])->name('frutas.recibeFrutas');
+});

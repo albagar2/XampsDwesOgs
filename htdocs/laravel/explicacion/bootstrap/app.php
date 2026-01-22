@@ -11,7 +11,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->alias(['mayoredad' => App\Http\Middleware\MayorEdad::class]);
+        $middleware->append(App\Http\Middleware\Fruteria::class);
+
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

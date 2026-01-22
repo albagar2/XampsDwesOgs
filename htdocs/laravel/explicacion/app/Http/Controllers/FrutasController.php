@@ -20,4 +20,15 @@ class FrutasController extends Controller
     public function peras(){
         return "Esta es la pagina de peras";
     }
+
+    public function recibeFrutas(Request $request){
+        if($request->fruta =='pera'){
+            return redirect()->route('frutas.index')->with('mensaje', 'Ha elegido pera');
+        }else
+            return back()->withInput()->with('mensaje', 'No puedes elegir pera');
+
+
+        return $request->all();
+        dd($request);
+    }
 }
